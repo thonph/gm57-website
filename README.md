@@ -1,4 +1,4 @@
-# gm57-website ...
+# gm57-website
 
 
 
