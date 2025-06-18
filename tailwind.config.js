@@ -150,7 +150,7 @@ module.exports = {
       opacity: {
         65: ".65",
       },
-      transitionProperty: { width: "width",'all': 'all'},
+      transitionProperty: { width: "width", all: "all" },
       boxShadow: {
         "solid-l": "0px 10px 120px 0px rgba(45, 74, 170, 0.1)",
         "solid-2": "0px 2px 10px rgba(122, 135, 167, 0.05)",
