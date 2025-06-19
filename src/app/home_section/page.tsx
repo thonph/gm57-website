@@ -5,18 +5,16 @@ import "../globals.css";
 function HomeSection() {
   return (
     <section
-      className={`${Style.main} relative py-20 px-4 bg-gradient-to-br from-green-50 to-white`}
+      className={`${Style.main} relative py-20 bg-gradient-to-br from-green-50 to-white`}
     >
-      <div className={`${Style.container} max-w-5xl mx-auto px-4`}>
+      <div className={`${Style.container} `}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full">
           {/* Cột 1 */}
-          <div>
-            <div
-              className={`${Style.badge} inline-flex items-center rounded-full border text-xs font-semibold transition-colors focus:outline-none border-transparent bg-green-600 hover:bg-green-700 text-white`}
-            >
+          <div className=" lg:px-0">
+            <div className={`${Style.badge} inline-flex items-center rounded-full border text-xs font-semibold transition-colors focus:outline-none border-transparent bg-green-600 hover:bg-green-700 text-white`}>
               Giải pháp quản lý toàn diện
             </div>
-            <h1 className="text-4xl md:text-6xl font-semibold text-black mb-6">
+             <h1 className="text-4xl md:text-6xl font-semibold text-black mb-6 whitespace-nowrap">
               HCM57 <span className="text-green-600">SOLUTION</span>
             </h1>
             <p className={`${Style.text} text-xl text-gray-600 mb-8`}>
@@ -38,7 +36,7 @@ function HomeSection() {
             </div>
           </div>
           {/* Cột 2 */}
-          <div className="w-full flex justify-center">
+          <div className="w-full flex justify-center px-4 lg:px-0">
             <img
               src="/images/vg.jpg"
               alt="HCM57 Solution Dashboard"
