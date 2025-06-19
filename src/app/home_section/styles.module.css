@@ -1,4 +1,4 @@
-.main{
+.main {
   margin-top: 72px;
   padding: 80px 16px;
 }
@@ -6,14 +6,13 @@
   width: 90%;
   margin: 0 auto;
 }
-.badge{
+.badge {
   padding: 7px !important;
   margin-bottom: 10px;
 }
-.text{
-
+.text {
   padding: 15px 0;
 }
-.button{
-  padding:10px 32px;
+.button {
+  padding: 10px 32px;
 }
