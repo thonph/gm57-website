@@ -24,7 +24,7 @@ function HomeSection() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium rounded border border-transparent bg-green-600 text-white hover:bg-green-700 transition px-8 py-3">
-                Liên hệ
+                <a href="#contact">Liên hệ</a>
               </button>
               <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium border h-11 rounded-md px-8 border-black text-black hover:bg-black hover:text-white">
                 Tìm hiểu thêm
