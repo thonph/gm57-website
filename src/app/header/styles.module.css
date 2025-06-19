@@ -1,0 +1,32 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  background-color: #fff;
+  color: black;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  height: 72px;
+  display: flex;
+  align-items: center;
+  
+}
+
+.container {
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 16px;
+}
+.menu{
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+}
+.nav_menu a{
+  margin: 0 0 0 32px;
+}

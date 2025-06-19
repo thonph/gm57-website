@@ -1,0 +1,31 @@
+
+.container {
+  width: 90%;
+  margin: 0 auto;
+  padding: 48px 16px;
+}
+.box{
+  margin-bottom: 16px;
+}
+.box2{
+  margin-top: 8px;
+}
+.item h4{
+  margin-bottom: 16px;
+}
+.item1{
+  margin-top: 8px;
+}
+.icon{
+  margin: 0 0 0 16px;
+}
+.item2{
+  margin-top: 12px;
+}
+.icon1{
+  margin-right: 8px;
+}
+.copyright{
+  margin-top: 32px;
+  padding-top: 32px;
+}
