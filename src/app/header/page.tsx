@@ -46,7 +46,7 @@ export default function Header() {
     const el = document.getElementById(id);
     if (el) {
       window.scrollTo({
-        top: el.offsetTop - 72, // 72px là chiều cao header
+        top: el.offsetTop - 72, 
         behavior: "smooth",
       });
     }
