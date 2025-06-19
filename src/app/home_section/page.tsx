@@ -7,8 +7,8 @@ function HomeSection() {
     <section
       className={`${Style.main} relative py-20 px-4 bg-gradient-to-br from-green-50 to-white`}
     >
-      <div className={`${Style.container}`}>
-        <div className="grid lg:grid-cols-2 gap-12 items-center w-full">
+      <div className={`${Style.container} max-w-5xl mx-auto px-4`}>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center w-full">
           {/* Cột 1 */}
           <div>
            <div className={`${Style.badge} inline-flex items-center rounded-full border text-xs font-semibold transition-colors focus:outline-none border-transparent bg-green-600 hover:bg-green-700 text-white`}>
@@ -30,13 +30,13 @@ function HomeSection() {
             </div>
           </div>
           {/* Cột 2 */}
-          <div>
+          <div className="w-full flex justify-center">
            <img
             src="/images/vg.jpg"
             alt="HCM57 Solution Dashboard"
             width={600}
             height={500}
-            className="rounded-lg shadow-xl"
+            className="rounded-lg shadow-xl w-full max-w-[500px] h-auto"
           />
           </div>
         </div>
