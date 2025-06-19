@@ -8,7 +8,10 @@ function SolutionSection() {
   return (
     <section id="solutions" className="py-16 px-4 bg-white">
       <div className="container mx-auto">
-        <TitleSolution />
+        <TitleSolution
+          title="Giải pháp công nghệ"
+          description="Chúng tôi đem lại cho doanh nghiệp các giải pháp công nghệ số bắt kịp xu hướng hiện đại"
+        />
         <div className="mb-16">
           <div className="bg-green-50 rounded-lg p-8 border border-green-200">
             <CardSolution
