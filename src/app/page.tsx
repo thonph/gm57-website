@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
 import Header from "./header/page";
 import SolutionSection from "./solutions_section/page";
 import FeaturesSection from "./features_seciton/page";
@@ -19,6 +20,7 @@ export default function Home() {
       <OpportunitiesSection />
       <Contact />
       <Footer />
+      {/* <TestApi /> */}
     </>
   );
 }

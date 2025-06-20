@@ -20,7 +20,7 @@ interface HeadingSolutionProps {
   titleClass?: string;
 }
 
-export default function HeadingSolution({
+export default function HeadingSolutionRent({
   icon,
   iconName = "code",
   iconClass = "h-8 w-8 text-green-600",
@@ -34,7 +34,7 @@ export default function HeadingSolution({
     const fetchData = async () => {
       try {
         const response = await httpGet<ApiResponse>(
-          "solution_categories/1e4e2b4f-2d51-4965-851b-478e96b04cbb"
+          "solution_categories/44e55562-55ab-4c76-9e0a-3d1191038ed6"
         );
 
         if (response.data) {
@@ -118,9 +118,14 @@ export default function HeadingSolution({
   const selectedIcon = icon || defaultIcons[iconName] || defaultIcons.code;
 
   return (
-    <div className="flex items-center justify-center gap-3 mb-4">
-      {selectedIcon}
-      <h3 className={titleClass}>{data.title}</h3>
+    <div>
+      <div className="flex items-center justify-center gap-3 mb-4">
+        {selectedIcon}
+        <h3 className={titleClass}>{data.title}</h3>
+      </div>
+      <div className="max-w-4xl mx-auto">
+        <p className="text-black mb-6 text-center">{data.description}</p>
+      </div>
     </div>
   );
 }

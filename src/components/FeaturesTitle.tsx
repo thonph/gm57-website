@@ -12,7 +12,7 @@ interface ApiResponse {
   data: SolutionItem[]; // Giả sử API trả về mảng trực tiếp
 }
 
-export default function TitleSolution() {
+export default function FeaturesTitle() {
   const [data, setData] = useState<SolutionItem | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -20,7 +20,7 @@ export default function TitleSolution() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await httpGet<ApiResponse>("solutions_section");
+        const response = await httpGet<ApiResponse>("features_section");
 
         // Kiểm tra và lấy dữ liệu đầu tiên
         if (response.data && response.data.length > 0) {
