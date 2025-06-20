@@ -1,5 +1,5 @@
 import Image from "next/image";
-import img from "../../public/placeholder.svg";
+import defaultImage from "../../public/placeholder.svg"; // Ảnh mặc định
 
 interface ItemServiceSolutionProps {
   imageUrl?: string;
@@ -11,7 +11,7 @@ interface ItemServiceSolutionProps {
 }
 
 function ItemServiceSolution({
-  imageUrl = img,
+  imageUrl,
   imageAlt = "Service illustration",
   title,
   features,
@@ -21,12 +21,30 @@ function ItemServiceSolution({
   return (
     <div className="bg-white p-6 rounded-lg border border-green-300 shadow-lg">
       <div className="mb-4">
-        <Image
-          src={imageUrl}
+        {/* <Image
+          src={imageUrl || defaultImage} // Sử dụng ảnh mặc định nếu không có imageUrl
           alt={imageAlt}
           width={imageWidth}
           height={imageHeight}
           className="rounded-lg shadow-lg object-cover"
+          onError={(e) => {
+            // Fallback khi ảnh bị lỗi
+            const target = e.target as HTMLImageElement;
+            target.src = defaultImage.src;
+            target.onerror = null; // Ngăn lỗi lặp vô hạn
+          }}
+        /> */}
+
+        <img
+          src={imageUrl || defaultImage.src}
+          alt={imageAlt}
+          style={{ width: imageWidth, height: imageHeight }}
+          className="rounded-lg shadow-lg object-cover"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.src = defaultImage.src;
+            target.onerror = null;
+          }}
         />
       </div>
       <h4 className="text-lg font-bold text-black mb-3">{title}</h4>
