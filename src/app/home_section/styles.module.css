@@ -6,11 +6,9 @@
   width: 90%;
   margin: 0 auto;
 }
-.badge {
-  padding: 7px !important;
-  margin-bottom: 10px;
-}
-.text {
+
+.text{
+
   padding: 15px 0;
 }
 .button {
