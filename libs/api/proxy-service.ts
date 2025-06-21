@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const API_BASE_URL =
-  process.env.API_BASE_URL || "http://10.208.50.7:8058/items";
+const API_BASE_URL = process.env.API_BASE_URL;
 
 export async function handleProxyRequest(
   request: NextRequest,

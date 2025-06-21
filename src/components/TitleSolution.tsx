@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { httpGet } from "../../utils/http";
+import ErrorComponent from "./ErrorComponent";
 
 interface SolutionItem {
   title: string;
@@ -40,8 +41,7 @@ export default function TitleSolution() {
   }, []);
 
   if (loading) return <div className="text-center py-4">Loading...</div>;
-  if (error)
-    return <div className="text-center text-red-500 py-4">{error}</div>;
+  if (error) return <ErrorComponent />;
   if (!data)
     return <div className="text-center py-4">No content available</div>;
 
