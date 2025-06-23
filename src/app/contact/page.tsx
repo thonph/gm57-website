@@ -7,7 +7,8 @@ function ContactSection() {
             Liên hệ với chúng tôi
           </h2>
           <p className="text-lg text-gray-600">
-            Để lại thông tin để nhận tư vấn miễn phí từ đội ngũ chuyên gia của HCM57 Solution
+            Để lại thông tin để nhận tư vấn miễn phí từ đội ngũ chuyên gia của
+            HCM57 Solution
           </p>
         </div>
 
@@ -71,7 +72,6 @@ function ContactSection() {
                   <option value="Cần Thơ">Cần Thơ</option>
                   <option value="Bình Dương">Bình Dương</option>
                   <option value="Thừa Thiên Huế">Thừa Thiên Huế</option>
-
                 </select>
               </div>
 
@@ -90,7 +90,9 @@ function ContactSection() {
                   className="mt-1 w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-green-600 focus:ring-green-600"
                 >
                   <option value="">Chọn dịch vụ bạn quan tâm</option>
-                  <option value="Tư vấn giải pháp Website">Tư vấn giải pháp Website</option>
+                  <option value="Tư vấn giải pháp Website">
+                    Tư vấn giải pháp Website
+                  </option>
                   <option value="Phần mềm quản lý khách sạn (H5768 FO)">
                     Phần mềm quản lý khách sạn (H5768 FO)
                   </option>
@@ -109,7 +111,9 @@ function ContactSection() {
                   <option value="Dịch vụ IT Outsourcing">
                     Dịch vụ IT Outsourcing
                   </option>
-                  <option value="Tư vấn chuyển đổi số">Tư vấn chuyển đổi số</option>
+                  <option value="Tư vấn chuyển đổi số">
+                    Tư vấn chuyển đổi số
+                  </option>
                   <option value="Khác">Khác</option>
                 </select>
               </div>
@@ -124,7 +128,8 @@ function ContactSection() {
             </form>
 
             <p className="text-sm text-gray-500 mt-4 text-center">
-              Bằng cách gửi form này, bạn đồng ý để HCM57 Solution liên hệ tư vấn qua thông tin đã cung cấp.
+              Bằng cách gửi form này, bạn đồng ý để HCM57 Solution liên hệ tư
+              vấn qua thông tin đã cung cấp.
             </p>
           </div>
         </div>

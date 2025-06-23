@@ -25,11 +25,15 @@ const readexPro = Readex_Pro({
   weight: ["400", "700"], // có thể thêm weights bạn muốn
 });
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
       <body>
-        <Home/>
+        <Home />
       </body>
     </html>
   );

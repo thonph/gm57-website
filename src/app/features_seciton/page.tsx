@@ -4,6 +4,7 @@ import { httpGet } from "../../../utils/http";
 import Image from "next/image";
 import img from "../../../public/placeholder.svg";
 import FeaturesTitle from "@/components/FeaturesTitle";
+import { getImageUrl } from "../../../utils/image";
 
 interface FeatureItem {
   id: string;
@@ -83,31 +84,38 @@ function FeaturesSection() {
             className="flex transition-transform duration-500 ease-in-out h-full"
             style={{ transform: `translateX(-${currentSlide * 100}%)` }}
           >
-            {slides.map((slide) => (
-              <div key={slide.id} className="w-full flex-shrink-0 relative">
-                <img
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    color: "transparent",
-                    width: "100%",
-                    height: "100%",
-                  }}
-                  src={`http://10.208.50.7:8058/assets/${slide.image}`}
-                  alt={slide.title}
-                  className="object-cover w-full h-full"
-                />
-                <div
-                  style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
-                  className="absolute inset-0 flex items-center justify-center bg-black"
-                >
-                  <div className="text-center text-white p-6 max-w-2xl">
-                    <h3 className="text-2xl font-bold mb-4">{slide.title}</h3>
-                    <p className="text-lg">{slide.description}</p>
+            {slides.map((slide) => {
+              const imageUrl = getImageUrl(slide.image, {
+                quality: 90,
+                fit: "cover",
+                format: "webp",
+              });
+              return (
+                <div key={slide.id} className="w-full flex-shrink-0 relative">
+                  <img
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      color: "transparent",
+                      width: "100%",
+                      height: "100%",
+                    }}
+                    src={imageUrl}
+                    alt={slide.title}
+                    className="object-cover w-full h-full"
+                  />
+                  <div
+                    style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+                    className="absolute inset-0 flex items-center justify-center bg-black"
+                  >
+                    <div className="text-center text-white p-6 max-w-2xl">
+                      <h3 className="text-2xl font-bold mb-4">{slide.title}</h3>
+                      <p className="text-lg">{slide.description}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* Navigation Arrows */}
