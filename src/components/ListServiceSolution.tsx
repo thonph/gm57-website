@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { httpGet } from "../../utils/http";
 import ItemServiceSolution from "./ItemServiceSolution";
 import defaultImage from "../../public/placeholder.svg"; // Import ảnh mặc định
+import { getImageUrl } from "../../utils/image";
 
 interface ServiceItem {
   id: string;
@@ -49,14 +50,27 @@ function ListServiceSolution() {
 
   return (
     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {services.map((service) => (
-        <ItemServiceSolution
-          key={service.id}
-          title={service.title}
-          features={service.features}
-          imageUrl={`http://10.208.50.7:8058/assets/${service.image}`}
-        />
-      ))}
+      {services.map((service) => {
+        // Tạo URL ảnh cho mỗi service
+        const imageUrl = service.image
+          ? getImageUrl(service.image, {
+              width: 402,
+              height: 402,
+              quality: 90,
+              fit: "cover",
+              format: "webp",
+            })
+          : defaultImage.src; // Sử dụng ảnh mặc định nếu không có image
+
+        return (
+          <ItemServiceSolution
+            key={service.id}
+            title={service.title}
+            features={service.features}
+            imageUrl={imageUrl} // Truyền URL đã xử lý
+          />
+        );
+      })}
     </div>
   );
 }
