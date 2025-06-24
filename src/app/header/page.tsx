@@ -8,15 +8,6 @@ import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { httpGet } from "../../../utils/http";
 
-// const sections = [
-//   { id: "home", label: "Trang chủ" },
-//   { id: "solutions", label: "Giải pháp công nghệ" },
-//   { id: "features", label: "Tính năng nổi bật" },
-//   { id: "strengths", label: "Điểm mạnh" },
-//   { id: "opportunities", label: "Cơ hội" },
-//   { id: "contact", label: "Liên hệ" },
-// ];
-
 interface MenuItem {
   id_menu: string;
   heading_menu: string;
