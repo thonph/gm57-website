@@ -34,7 +34,7 @@ export default function CardSolution() {
         );
 
         if (response.data) {
-          console.log("Fix ảnh:", response.data);
+          // console.log("Fix ảnh:", response.data);
           setData(response.data);
         } else {
           setError("No data available");

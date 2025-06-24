@@ -28,7 +28,7 @@ function FeaturesSection() {
       try {
         const response = await httpGet<ApiResponse>("features_item");
         if (response.data) {
-          console.log("Fetched features:", response.data);
+          // console.log("Fetched features:", response.data);
           setSlides(response.data);
         }
       } catch (error) {
