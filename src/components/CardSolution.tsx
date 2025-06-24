@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { httpGet } from "../../utils/http";
 
 import { Globe, Shield, BarChart, LucideIcon } from "lucide-react";
+import { getImageUrl } from "../../utils/image";
 
 interface SolutionItem {
   id: string;
@@ -33,7 +34,7 @@ export default function CardSolution() {
         );
 
         if (response.data) {
-          console.log("Fix ảnh:", response.data);
+          // console.log("Fix ảnh:", response.data);
           setData(response.data);
         } else {
           setError("No data available");
@@ -55,7 +56,14 @@ export default function CardSolution() {
   if (!data) return <div className="text-center py-8">No data available</div>;
 
   const IconComponent = iconComponents[data.icon] || Globe;
-  const imageUrl = `http://10.208.50.7:8058/assets/${data.image}`;
+  // const imageUrl = `http://10.208.50.7:8058/assets/${data.image}`;
+  const imageUrl = getImageUrl(data.image, {
+    width: 500,
+    height: 500,
+    quality: 90,
+    fit: "cover",
+    format: "webp",
+  });
 
   return (
     <div className="grid lg:grid-cols-2 gap-8 items-center">
