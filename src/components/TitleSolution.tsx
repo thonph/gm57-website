@@ -21,6 +21,7 @@ export default function TitleSolution() {
     const fetchData = async () => {
       try {
         const response = await httpGet<ApiResponse>("solutions_section");
+        console.log("API Response:", response);
 
         // Kiểm tra và lấy dữ liệu đầu tiên
         if (response.data && response.data.length > 0) {
