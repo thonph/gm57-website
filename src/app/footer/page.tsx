@@ -1,103 +1,156 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Style from "./styles.module.css";
 import "../globals.css";
-import "@fortawesome/fontawesome-free/css/all.min.css";
 import Image from "next/image";
+
+// Định nghĩa lại kiểu dữ liệu cho item_contact
+interface ContactItem {
+  id: number;
+  title: string;
+  icon_contact: string;
+  href: string;
+}
+
+interface FooterIcon {
+  id: number;
+  logo: string | { id: string }; // Có thể là string hoặc object (tùy API)
+  url: string;
+}
+interface FooterItemChild {
+  id: number;
+  title: string;
+  href: string;
+}
+interface FooterItem {
+  id: number;
+  title: string;
+  items: FooterItemChild[];
+  item_contact: ContactItem[];
+}
+interface FooterData {
+  id: number;
+  description: string;
+  copyright?: string;
+  logo?: { id: string };
+  icons: FooterIcon[];
+  items: FooterItem[];
+}
+
 function Footer() {
+  const [footer, setFooter] = useState<FooterData | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchFooter = async () => {
+      try {
+        const res = await fetch(
+          "http://10.208.50.7:8058/items/footer_section?fields=id,description,copyright,logo.id,icons.id,icons.url,icons.logo.id,items.id,items.title,items.items.id,items.items.title,items.items.href,items.item_contact.id,items.item_contact.title,items.item_contact.icon_contact,items.item_contact.href"
+        );
+        const json = await res.json();
+        if (json.data && json.data.length > 0) setFooter(json.data[0]);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchFooter();
+  }, []);
+
+  if (loading) return <div>Đang tải footer...</div>;
+  if (!footer) return <div className="text-red-500">Không có dữ liệu footer</div>;
+
   return (
     <div className={`bg-green-600 text-white`}>
       <div className={`${Style.container} mx-auto px-4 py-12`}>
         <div className="grid md:grid-cols-4 gap-8">
-          {/* Item 1 */}
+          {/* Item 1: Logo + mô tả + social */}
           <div>
             <div className={`${Style.box} flex items-center mb-4`}>
-              {/* Nội dung bên trái */}
-              <Image
-                src="/images/logo.png"
-                alt="Nội dung bên trái"
-                width={100}
-                height={100}
-              />
-              {/* Nội dung bên phải */}
-              <span></span>
+              {footer.logo?.id && (
+                <img
+                  src={`http://10.208.50.7:8058/assets/${footer.logo.id}`}
+                  alt="Logo"
+                  width={100}
+                  height={100}
+                  style={{ objectFit: "contain" }}
+                />
+              )}
             </div>
             <p className={`${Style.box} text-green-100 mb-4`}>
-              Phần mềm quản lý đa ngành nghề hàng đầu Việt Nam. Tích hợp AI,
-              mobile app và hệ thống CRM hoàn chỉnh.
+              {footer.description}
             </p>
-            <div className=" h-25 flex space-x-4">
-              <a
-                href="#"
-                aria-label="Facebook"
-                className="text-green-100 hover:text-white"
-              >
-                <i className="fab fa-facebook-f"></i>
-              </a>
-              <a
-                href="#"
-                aria-label="Twitter"
-                className={`${Style.icon} text-green-100 hover:text-white`}
-              >
-                <i className="fab fa-twitter"></i>
-              </a>
-              <a
-                href="#"
-                aria-label="LinkedIn"
-                className={`${Style.icon} text-green-100 hover:text-white`}
-              >
-                <i className="fab fa-linkedin-in"></i>
-              </a>
+            <div className="h-25 flex space-x-4">
+              {footer.icons.map((icon) => (
+                <a
+                  key={icon.id}
+                  href={icon.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-green-100 hover:text-white"
+                >
+                  <img
+                    src={`http://10.208.50.7:8058/assets/${
+                      typeof icon.logo === "string"
+                        ? icon.logo
+                        : icon.logo?.id
+                    }`}
+                    alt="icon"
+                    width={28}
+                    height={28}
+                    className="rounded-full"
+                  />
+                </a>
+              ))}
             </div>
           </div>
-          {/* Item 2 */}
-          <div className={Style.item}>
-            <h4 className="text-lg font-semibold mb-4 text-white">Dịch vụ</h4>
-            <ul className="space-y-2">
-              <li>Quản lý khách sạn</li>
-              <li className={Style.item1}>Quản lý nhà hàng</li>
-              <li className={Style.item1}>Quản lý SPA</li>
-              <li className={Style.item1}>Quản lý phòng khám</li>
-              <li className={Style.item1}>Tích hợp CRM</li>
-            </ul>
-          </div>
-          {/* Item 3 */}
-          <div className={Style.item}>
-            <h4 className="text-lg font-semibold mb-4 text-white">Hỗ trợ</h4>
-            <ul className="space-y-2">
-              <li>Hướng dẫn sử dụng</li>
-              <li className={Style.item1}>Video tutorial</li>
-              <li className={Style.item1}>FAQ</li>
-              <li className={Style.item1}>Liên hệ hỗ trợ</li>
-              <li className={Style.item1}>Báo lỗi</li>
-            </ul>
-          </div>
-          {/* Item 4 */}
+          {/* Item 2 & 3: Dịch vụ, Hỗ trợ */}
+          {footer.items
+            .filter((item) => item.items.length > 0)
+            .map((item) => (
+              <div className={Style.item} key={item.id}>
+                <h4 className="text-lg font-semibold mb-4 text-white">{item.title}</h4>
+                <ul className="space-y-2">
+                  {item.items.map((child) => (
+                    <li key={child.id}>
+                      <a href={child.href} target="_blank" rel="noopener noreferrer">
+                        {child.title}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          {/* Item 4: Liên hệ */}
           <div>
             <h4 className="text-lg font-semibold mb-4 text-white">Liên hệ</h4>
             <ul className="space-y-2">
-              <li className={`flex items-center text-white text-lg`}>
-                <i className={`${Style.icon1} fas fa-phone-alt mr-3`}></i>
-                +84 123 456 789
-              </li>
-              <li
-                className={`${Style.item2} flex items-center text-white text-lg`}
-              >
-                <i className={`${Style.icon1} fas fa-envelope mr-3`}></i>
-                info@hcm57solution.com
-              </li>
-              <li
-                className={`${Style.item2} flex items-center text-white text-lg`}
-              >
-                <i className={`${Style.icon1} fas fa-map-marker-alt mr-3`}></i>
-                TP. Hồ Chí Minh, Việt Nam
-              </li>
+              {footer.items
+                .find((item) => item.title === "Liên hệ")
+                ?.item_contact.map((contact) => (
+                  <li
+                    key={contact.id}
+                    className="flex items-center text-white text-lg"
+                  >
+                    {contact.icon_contact && (
+                      <img
+                        src={`http://10.208.50.7:8058/assets/${contact.icon_contact}`}
+                        alt="icon"
+                        width={22}
+                        height={22}
+                        className="mr-3"
+                      />
+                    )}
+                    <a href={contact.href} target="_blank" rel="noopener noreferrer">
+                      {contact.title}
+                    </a>
+                  </li>
+                ))}
             </ul>
           </div>
         </div>
         <div
           className={`${Style.copyright} border-t border-green-500 mt-8 pt-8 text-center text-green-100`}
         >
-          © 2024 HCM57 Solution. Tất cả quyền được bảo lưu.
+          {footer.copyright || "© 2024 HCM57 Solution. Tất cả quyền được bảo lưu."}
         </div>
       </div>
     </div>
