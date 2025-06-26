@@ -5,7 +5,7 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import Image from "next/image";
 function Footer() {
   return (
-    <div className={`bg-green-600 text-white`}>
+    <footer id="footer" className={`bg-green-600 text-white`}>
       <div className={`${Style.container} mx-auto px-4 py-12`}>
         <div className="grid md:grid-cols-4 gap-8">
           {/* Item 1 */}
@@ -100,7 +100,7 @@ function Footer() {
           © 2024 HCM57 Solution. Tất cả quyền được bảo lưu.
         </div>
       </div>
-    </div>
+    </footer>
   );
 }
 

@@ -11,6 +11,7 @@ import Footer from "./footer/page";
 import { httpGet } from "../../utils/http";
 import ErrorComponent from "@/components/ErrorComponent";
 import NoInterNet from "@/components/NoInterNet";
+import Loading from "@/ui/loading/Loading";
 
 interface SolutionItem {
   title: string;
@@ -19,14 +20,24 @@ interface SolutionItem {
 
 interface ApiResponse {
   message: string;
-  data: SolutionItem[]; // Giả sử API trả về mảng trực tiếp
+  data: SolutionItem[];
 }
 
 export default function Home() {
   const [data, setData] = useState<SolutionItem | null>(null);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [fetching, setFetching] = useState(true);
+  const [showLoading, setShowLoading] = useState(true); // hiển thị <Loading /> toàn trang
 
+  // Delay 4s để ẩn loading
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowLoading(false);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Fetch dữ liệu (song song với loading)
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -45,19 +56,22 @@ export default function Home() {
         }
         console.error("Fetch error:", err);
       } finally {
-        setLoading(false);
+        setFetching(false);
       }
     };
 
     fetchData();
   }, []);
 
-  if (loading) return <div className="text-center py-4">Loading...</div>;
+  // ✅ Nếu vẫn đang loading 4s → chỉ hiển thị <Loading />
+  if (showLoading) {
+    return <Loading />;
+  }
 
+  // ✅ Sau 4s, xử lý lỗi/fetch/data như bình thường
   if (error === "no-internet") return <NoInterNet />;
   if (error) return <ErrorComponent />;
-
-  if (!data)
+  if (!data && !fetching)
     return <div className="text-center py-4">No content available</div>;
 
   return (
@@ -70,7 +84,6 @@ export default function Home() {
       <OpportunitiesSection />
       <Contact />
       <Footer />
-      {/* <TestApi /> */}
     </>
   );
 }
