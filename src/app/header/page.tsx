@@ -37,8 +37,6 @@ export default function Header() {
           "heading_section?fields=id,logo,items.id_menu,items.heading_menu"
         );
 
-        console.log("tesst header: ", response);
-
         if (response.data && response.data.length > 0) {
           setHeaderData(response.data[0]);
         } else {
@@ -55,26 +53,6 @@ export default function Header() {
     fetchHeaderData();
   }, []);
 
-  // Scroll spy effect
-  useEffect(() => {
-    if (!headerData) return;
-
-    const handleScroll = () => {
-      let current = "home";
-      for (const item of headerData.items) {
-        const el = document.getElementById(item.id_menu);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          if (rect.top <= 80) current = item.id_menu;
-        }
-      }
-      setActive(current);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [headerData]);
-
   // Smooth scroll handler
   const handleMenuClick = (
     e: React.MouseEvent<HTMLAnchorElement>,
@@ -84,11 +62,49 @@ export default function Header() {
     const el = document.getElementById(id);
     if (el) {
       window.scrollTo({
-        top: el.offsetTop - 72,
+        top: el.offsetTop - 72, // 72 là chiều cao header
         behavior: "smooth",
       });
     }
   };
+
+  // Scroll spy effect with 50% visibility and footer check
+  useEffect(() => {
+    if (!headerData) return;
+
+    const handleScroll = () => {
+      const viewportHeight = window.innerHeight;
+      const triggerPoint = viewportHeight * 0.5; // 50% chiều cao viewport
+      const documentHeight = document.documentElement.scrollHeight;
+      const scrollPosition = window.scrollY + viewportHeight;
+
+      // Kiểm tra xem đã scroll đến gần cuối trang chưa (cách footer 100px)
+      const isNearFooter = scrollPosition > documentHeight - 100;
+
+      if (isNearFooter) {
+        setActive(""); // Không set active section nào
+        return;
+      }
+
+      let current = "home"; // Mặc định là home khi ở đầu trang
+
+      for (const item of headerData.items) {
+        const el = document.getElementById(item.id_menu);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= triggerPoint && rect.bottom >= triggerPoint) {
+            current = item.id_menu;
+            break;
+          }
+        }
+      }
+
+      setActive(current);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [headerData]);
 
   if (loading) return <div className="h-16 bg-white"></div>;
   if (error || !headerData)
