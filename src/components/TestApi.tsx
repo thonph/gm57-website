@@ -1,7 +1,7 @@
 "use client";
-import { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { useEffect } from "react";
 import { httpGet } from "../../utils/http";
-import ErrorComponent from "./ErrorComponent";
 
 interface SolutionItem {
   title: string;
@@ -13,16 +13,14 @@ interface ApiResponse {
   data: SolutionItem[]; // Giả sử API trả về mảng trực tiếp
 }
 
-export default function TitleSolution() {
+const TestApi = () => {
   const [data, setData] = useState<SolutionItem | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await httpGet<ApiResponse>("solutions_section");
-        console.log("API Response:", response);
 
         // Kiểm tra và lấy dữ liệu đầu tiên
         if (response.data && response.data.length > 0) {
@@ -41,17 +39,12 @@ export default function TitleSolution() {
     fetchData();
   }, []);
 
-  if (loading) return <div className="text-center py-4">Loading...</div>;
-  if (error) return <ErrorComponent />;
-  if (!data)
-    return <div className="text-center py-4">No content available</div>;
-
   return (
-    <div className="text-center mb-12">
-      <h2 className="text-3xl text-black mb-4 font-bold md:text-4xl">
-        {data.title}
-      </h2>
-      <p className="text-lg text-gray-600">{data.description}</p>
+    <div>
+      <h2>Đã gọi API và log ra console</h2>
+      <p>Mở Developer Tools (F12) để xem kết quả trong tab Console</p>
     </div>
   );
-}
+};
+
+export default TestApi;

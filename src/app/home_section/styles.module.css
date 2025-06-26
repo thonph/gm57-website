@@ -1,0 +1,16 @@
+.main {
+  margin-top: 72px;
+  padding: 80px 16px;
+}
+.container {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.text{
+
+  padding: 15px 0;
+}
+.button {
+  padding: 10px 32px;
+}

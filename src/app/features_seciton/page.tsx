@@ -1,67 +1,81 @@
 "use client";
-import TitleSolution from "@/components/TitleSolution";
 import { useState, useEffect } from "react";
+import { httpGet } from "../../../utils/http";
 import Image from "next/image";
 import img from "../../../public/placeholder.svg";
+import FeaturesTitle from "@/components/FeaturesTitle";
+import { getImageUrl } from "../../../utils/image";
+
+interface FeatureItem {
+  id: string;
+  title: string;
+  description: string;
+  image: string | null;
+}
+
+interface ApiResponse {
+  data: FeatureItem[];
+}
 
 function FeaturesSection() {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [slides, setSlides] = useState<FeatureItem[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Dữ liệu slider
-  const slides = [
-    {
-      id: 1,
-      image: img,
-      title: "Tính năng 1",
-      description:
-        "Hệ thống tích hợp AI giúp tự động hóa quy trình check-in, quản lý phòng và dịch vụ khách hàng.",
-    },
-    {
-      id: 2,
-      image: img,
-      title: "Tính năng 2",
-      description:
-        "Công nghệ quản lý phòng thông minh với cảm biến IoT và điều khiển từ xa.",
-    },
-    {
-      id: 3,
-      image: img,
-      title: "Tính năng 3",
-      description:
-        "Hệ thống báo cáo thời gian thực giúp theo dõi hiệu suất kinh doanh mọi lúc.",
-    },
-  ];
-
-  // Tự động chuyển slide
+  // Fetch data from API
   useEffect(() => {
+    const fetchFeatures = async () => {
+      try {
+        const response = await httpGet<ApiResponse>("features_item");
+        if (response.data) {
+          // console.log("Fetched features:", response.data);
+          setSlides(response.data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch features:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFeatures();
+  }, []);
+
+  // Auto slide transition
+  useEffect(() => {
+    if (slides.length === 0) return;
+
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
     }, 5000);
     return () => clearInterval(interval);
   }, [slides.length]);
 
-  // Chuyển đến slide cụ thể
   const goToSlide = (index: number) => {
     setCurrentSlide(index);
   };
 
-  // Chuyển slide tiếp theo
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev === slides.length - 1 ? 0 : prev + 1));
   };
 
-  // Chuyển slide trước đó
   const prevSlide = () => {
     setCurrentSlide((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
   };
 
+  if (loading)
+    return <div className="py-16 px-4 bg-gray-50 text-center">Loading...</div>;
+  if (slides.length === 0)
+    return (
+      <div className="py-16 px-4 bg-gray-50 text-center">
+        No features available
+      </div>
+    );
+
   return (
     <section id="features" className="py-16 px-4 bg-gray-50">
       <div className="container mx-auto">
-        <TitleSolution
-          title="Tính năng nổi bật"
-          description="Khám phá những tính năng vượt trội của HCM57 Solution"
-        />
+        <FeaturesTitle />
 
         {/* Slider Container */}
         <div className="relative w-full h-96 overflow-hidden rounded-lg bg-white shadow-lg mt-8">
@@ -70,40 +84,44 @@ function FeaturesSection() {
             className="flex transition-transform duration-500 ease-in-out h-full"
             style={{ transform: `translateX(-${currentSlide * 100}%)` }}
           >
-            {slides.map((slide) => (
-              <div key={slide.id} className="w-full flex-shrink-0 relative">
-                <div></div>
-                <Image
-                  src={slide.image}
-                  alt={slide.title}
-                  fill
-                  className="object-cover"
-                  placeholder="blur"
-                  style={{
-                    position: "absolute",
-                    height: "100%",
-                    width: "100%",
-                    inset: "0px",
-                    color: "transparent",
-                  }}
-                  blurDataURL={img.src}
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                />
-                <div className="absolute inset-0 bg-opacity-40"></div>
-                <div className="absolute inset-0 flex items-center justify-center bg-black opacity-40">
-                  <div className="text-center text-white p-6">
-                    <h3 className="text-2xl font-bold mb-4">{slide.title}</h3>
-                    <p className="text-lg">{slide.description}</p>
+            {slides.map((slide) => {
+              const imageUrl = getImageUrl(slide.image, {
+                quality: 90,
+                fit: "cover",
+                format: "webp",
+              });
+              return (
+                <div key={slide.id} className="w-full flex-shrink-0 relative">
+                  <img
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      color: "transparent",
+                      width: "100%",
+                      height: "100%",
+                    }}
+                    src={imageUrl}
+                    alt={slide.title}
+                    className="object-cover w-full h-full"
+                  />
+                  <div
+                    style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
+                    className="absolute inset-0 flex items-center justify-center bg-black"
+                  >
+                    <div className="text-center text-white p-6 max-w-2xl">
+                      <h3 className="text-2xl font-bold mb-4">{slide.title}</h3>
+                      <p className="text-lg">{slide.description}</p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
           {/* Navigation Arrows */}
           <button
             onClick={prevSlide}
-            className="border-none inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input hover:text-accent-foreground h-10 w-10 absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white"
+            className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white h-10 w-10 rounded-full flex items-center justify-center transition-all"
             aria-label="Previous slide"
           >
             <svg
@@ -123,7 +141,7 @@ function FeaturesSection() {
           </button>
           <button
             onClick={nextSlide}
-            className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 border border-input hover:text-accent-foreground h-10 w-10 absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/80 hover:bg-white border-none"
+            className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white h-10 w-10 rounded-full flex items-center justify-center transition-all"
             aria-label="Next slide"
           >
             <svg
@@ -149,9 +167,7 @@ function FeaturesSection() {
                 key={index}
                 onClick={() => goToSlide(index)}
                 className={`w-3 h-3 rounded-full transition-all ${
-                  currentSlide === index
-                    ? "bg-white w-3 h-3"
-                    : "bg-[#c6c6c6] w-3 h-3"
+                  currentSlide === index ? "bg-white" : "bg-gray-400"
                 }`}
                 aria-label={`Go to slide ${index + 1}`}
               />

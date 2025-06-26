@@ -1,0 +1,31 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  background-color: #fff;
+  color: black;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+  display: flex;
+  align-items: center;
+}
+
+.container {
+  width: 90%;
+  margin: 0 auto;
+  height: 100%;
+  padding: 0px 16px;
+}
+.menu{
+
+  width: 100%;
+  padding: 16px 0px;
+}
+.nav_menu{
+  margin: 0 0 0 32px;
+}
+.mobile{
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}

@@ -32,7 +32,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${readexPro.variable} antialiased`}>
+      <body>
         <Home />
       </body>
     </html>
