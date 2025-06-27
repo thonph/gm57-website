@@ -1,5 +1,4 @@
 "use client";
-import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import Header from "./header/page";
 import SolutionSection from "./solutions_section/page";
@@ -12,7 +11,6 @@ import Footer from "./footer/page";
 import { httpGet } from "../../utils/http";
 import ErrorComponent from "@/components/ErrorComponent";
 import NoInterNet from "@/components/NoInterNet";
-import NotFound from "@/components/NotFound";
 
 interface SolutionItem {
   title: string;
@@ -21,11 +19,10 @@ interface SolutionItem {
 
 interface ApiResponse {
   message: string;
-  data: SolutionItem[];
+  data: SolutionItem[]; // Giả sử API trả về mảng trực tiếp
 }
 
 export default function Home() {
-  const pathname = usePathname(); // Di chuyển lên đầu component
   const [data, setData] = useState<SolutionItem | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -55,11 +52,6 @@ export default function Home() {
     fetchData();
   }, []);
 
-  // Kiểm tra pathname trước các điều kiện khác
-  if (pathname !== "/") {
-    return <NotFound />;
-  }
-
   if (loading) return <div className="text-center py-4">Loading...</div>;
 
   if (error === "no-internet") return <NoInterNet />;
@@ -78,6 +70,7 @@ export default function Home() {
       <OpportunitiesSection />
       <Contact />
       <Footer />
+      {/* <TestApi /> */}
     </>
   );
 }
