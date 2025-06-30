@@ -105,7 +105,7 @@ export default function Header() {
   //       const viewportHeight = window.innerHeight;
 
   //       // Điều kiện mới: phần tử phải nằm trong khoảng từ 1/3 màn hình đến cách bottom 64px
-  //       if (elementTop <= viewportHeight / 3 && elementBottom >= offsetBottom) {
+  //       if (elementTop <= viewportHeight / 2 && elementBottom >= offsetBottom) {
   //         current = section.id;
   //         break;
   //       }
@@ -120,7 +120,7 @@ export default function Header() {
   //   };
 
   //   // Thêm debounce để tối ưu hiệu suất
-  //   const debouncedScroll = debounce(handleScroll, 100);
+  //   const debouncedScroll = debounce(handleScroll, 10);
   //   window.addEventListener("scroll", debouncedScroll);
 
   //   // Gọi ngay lần đầu để xác định trạng thái ban đầu
@@ -129,50 +129,42 @@ export default function Header() {
   //   return () => window.removeEventListener("scroll", debouncedScroll);
   // }, [headerData]);
 
+  // Scroll spy effect with 50% visibility and footer check
   useEffect(() => {
     if (!headerData) return;
 
     const handleScroll = () => {
-      const sections = headerData.items
-        .map((item) => ({
-          id: item.id_menu,
-          element: document.getElementById(item.id_menu),
-        }))
-        .filter((section) => section.element !== null);
-
-      let current = "";
       const viewportHeight = window.innerHeight;
+      const triggerPoint = viewportHeight * 0.5; // 50% chiều cao viewport
+      const documentHeight = document.documentElement.scrollHeight;
+      const scrollPosition = window.scrollY + viewportHeight;
 
-      for (const section of sections) {
-        const element = section.element;
-        if (!element) continue;
+      // Kiểm tra xem đã scroll đến gần cuối trang chưa (cách footer 100px)
+      const isNearFooter = scrollPosition > documentHeight - 100;
 
-        const rect = element.getBoundingClientRect();
-        const elementMiddle = rect.top + rect.height / 2 + 64; // Vị trí giữa section
-
-        // Active khi vị trí giữa section nằm trong khoảng 30%-70% viewport
-        if (
-          elementMiddle >= viewportHeight * 0.5 &&
-          elementMiddle <= viewportHeight * 0.5
-        ) {
-          current = section.id;
-          break;
-        }
+      if (isNearFooter) {
+        setActive("");
+        return;
       }
 
-      // Nếu không có section nào active, kiểm tra xem có đang ở đầu trang không
-      if (!current && window.scrollY < 100) {
-        current = "home";
+      let current = "home";
+
+      for (const item of headerData.items) {
+        const el = document.getElementById(item.id_menu);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= triggerPoint && rect.bottom >= triggerPoint) {
+            current = item.id_menu;
+            break;
+          }
+        }
       }
 
       setActive(current);
     };
 
-    const debouncedScroll = debounce(handleScroll, 10);
-    window.addEventListener("scroll", debouncedScroll);
-    handleScroll(); // Gọi ngay lần đầu
-
-    return () => window.removeEventListener("scroll", debouncedScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
   }, [headerData]);
 
   if (loading) return <div className="h-16 bg-white"></div>;
