@@ -11,21 +11,21 @@
   align-items: center;
 }
 
-.container {
-  width: 90%;
-  margin: 0 auto;
-  height: 100%;
-  padding: 0px 16px;
-}
-.menu{
+/* @media (min-width: 1400px) {
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+} */
 
+.menu {
   width: 100%;
   padding: 16px 0px;
 }
-.nav_menu{
+.nav_menu {
   margin: 0 0 0 32px;
 }
-.mobile{
+.mobile {
   padding-top: 1rem;
   padding-bottom: 1rem;
 }

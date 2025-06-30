@@ -62,48 +62,117 @@ export default function Header() {
     const el = document.getElementById(id);
     if (el) {
       window.scrollTo({
-        top: el.offsetTop - 72, // 72 là chiều cao header
+        top: el.offsetTop - 16, // 72 là chiều cao header
         behavior: "smooth",
       });
     }
   };
 
-  // Scroll spy effect with 50% visibility and footer check
+  // Hàm debounce
+  function debounce(func: Function, wait: number) {
+    let timeout: NodeJS.Timeout;
+    return function executedFunction(...args: any[]) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  }
+
+  // useEffect(() => {
+  //   if (!headerData) return;
+
+  //   const handleScroll = () => {
+  //     const sections = headerData.items
+  //       .map((item) => ({
+  //         id: item.id_menu,
+  //         element: document.getElementById(item.id_menu),
+  //       }))
+  //       .filter((section) => section.element !== null);
+
+  //     let current = "";
+  //     const offsetBottom = 64;
+
+  //     for (const section of sections) {
+  //       const element = section.element;
+  //       if (!element) continue;
+
+  //       const rect = element.getBoundingClientRect();
+  //       const elementTop = rect.top;
+  //       const elementBottom = rect.bottom;
+  //       const viewportHeight = window.innerHeight;
+
+  //       // Điều kiện mới: phần tử phải nằm trong khoảng từ 1/3 màn hình đến cách bottom 64px
+  //       if (elementTop <= viewportHeight / 3 && elementBottom >= offsetBottom) {
+  //         current = section.id;
+  //         break;
+  //       }
+  //     }
+
+  //     // Nếu không có section nào active, kiểm tra xem có đang ở đầu trang không
+  //     if (!current && window.scrollY < 100) {
+  //       current = "home"; // Hoặc section đầu tiên nếu bạn muốn
+  //     }
+
+  //     setActive(current);
+  //   };
+
+  //   // Thêm debounce để tối ưu hiệu suất
+  //   const debouncedScroll = debounce(handleScroll, 100);
+  //   window.addEventListener("scroll", debouncedScroll);
+
+  //   // Gọi ngay lần đầu để xác định trạng thái ban đầu
+  //   handleScroll();
+
+  //   return () => window.removeEventListener("scroll", debouncedScroll);
+  // }, [headerData]);
+
   useEffect(() => {
     if (!headerData) return;
 
     const handleScroll = () => {
+      const sections = headerData.items
+        .map((item) => ({
+          id: item.id_menu,
+          element: document.getElementById(item.id_menu),
+        }))
+        .filter((section) => section.element !== null);
+
+      let current = "";
       const viewportHeight = window.innerHeight;
-      const triggerPoint = viewportHeight * 0.5; // 50% chiều cao viewport
-      const documentHeight = document.documentElement.scrollHeight;
-      const scrollPosition = window.scrollY + viewportHeight;
 
-      // Kiểm tra xem đã scroll đến gần cuối trang chưa (cách footer 100px)
-      const isNearFooter = scrollPosition > documentHeight - 100;
+      for (const section of sections) {
+        const element = section.element;
+        if (!element) continue;
 
-      if (isNearFooter) {
-        setActive(""); // Không set active section nào
-        return;
+        const rect = element.getBoundingClientRect();
+        const elementMiddle = rect.top + rect.height / 2 + 64; // Vị trí giữa section
+
+        // Active khi vị trí giữa section nằm trong khoảng 30%-70% viewport
+        if (
+          elementMiddle >= viewportHeight * 0.5 &&
+          elementMiddle <= viewportHeight * 0.5
+        ) {
+          current = section.id;
+          break;
+        }
       }
 
-      let current = "home"; // Mặc định là home khi ở đầu trang
-
-      for (const item of headerData.items) {
-        const el = document.getElementById(item.id_menu);
-        if (el) {
-          const rect = el.getBoundingClientRect();
-          if (rect.top <= triggerPoint && rect.bottom >= triggerPoint) {
-            current = item.id_menu;
-            break;
-          }
-        }
+      // Nếu không có section nào active, kiểm tra xem có đang ở đầu trang không
+      if (!current && window.scrollY < 100) {
+        current = "home";
       }
 
       setActive(current);
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    const debouncedScroll = debounce(handleScroll, 10);
+    window.addEventListener("scroll", debouncedScroll);
+    handleScroll(); // Gọi ngay lần đầu
+
+    return () => window.removeEventListener("scroll", debouncedScroll);
   }, [headerData]);
 
   if (loading) return <div className="h-16 bg-white"></div>;
@@ -121,10 +190,10 @@ export default function Header() {
         <>
           <div className={`${Style.container}`}>
             <div
-              className={`${Style.menu} max-w-7xl mx-auto flex justify-between items-center py-4 px-4`}
+              className={`${Style.menu} container mx-auto flex justify-between items-center py-4 px-4`}
             >
               {/* Logo */}
-              <div className="w-24 h-10 bg-gray-100 flex items-center justify-center">
+              <div className="w-24 h-10flex items-center justify-center pl-4 pr-4 md:pl-0  md:ml-0">
                 {headerData.logo && (
                   <img
                     src={`http://10.208.50.7:8058/assets/${headerData.logo}`}
@@ -137,7 +206,7 @@ export default function Header() {
               </div>
 
               {/* Menu desktop */}
-              <nav className="hidden md:flex flex-1 justify-center space-x-8">
+              <nav className="hidden md:flex flex-1 justify-end space-x-8">
                 {headerData.items.map((item) => (
                   <a
                     key={item.id_menu}
@@ -158,7 +227,7 @@ export default function Header() {
 
               {/* Mobile menu button */}
               <div className="md:hidden">
-                <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-gray-700 hover:bg-gray-200 focus:outline-none">
+                <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 pr-4 text-gray-700 hover:bg-gray-200 focus:outline-none">
                   {open ? (
                     <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
                   ) : (

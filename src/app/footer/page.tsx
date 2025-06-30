@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import Style from "./styles.module.css";
 import "../globals.css";
@@ -56,11 +58,12 @@ function Footer() {
   }, []);
 
   if (loading) return <div>Đang tải footer...</div>;
-  if (!footer) return <div className="text-red-500">Không có dữ liệu footer</div>;
+  if (!footer)
+    return <div className="text-red-500">Không có dữ liệu footer</div>;
 
   return (
     <div className={`bg-green-600 text-white`}>
-      <div className={`${Style.container} mx-auto px-4 py-12`}>
+      <div className={`container mx-auto py-12 pl-4 md:pl-0`}>
         <div className="grid md:grid-cols-4 gap-8">
           {/* Item 1: Logo + mô tả + social */}
           <div>
@@ -89,9 +92,7 @@ function Footer() {
                 >
                   <img
                     src={`http://10.208.50.7:8058/assets/${
-                      typeof icon.logo === "string"
-                        ? icon.logo
-                        : icon.logo?.id
+                      typeof icon.logo === "string" ? icon.logo : icon.logo?.id
                     }`}
                     alt="icon"
                     width={28}
@@ -107,11 +108,18 @@ function Footer() {
             .filter((item) => item.items.length > 0)
             .map((item) => (
               <div className={Style.item} key={item.id}>
-                <h4 className="text-lg font-semibold mb-4 text-white">{item.title}</h4>
+                <h4 className="text-lg font-semibold mb-4 text-white">
+                  {item.title}
+                </h4>
                 <ul className="space-y-2">
                   {item.items.map((child) => (
                     <li key={child.id}>
-                      <a href={child.href} target="_blank" rel="noopener noreferrer">
+                      <a
+                        style={{ fontSize: "16px", fontWeight: "normal" }}
+                        href={child.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
                         {child.title}
                       </a>
                     </li>
@@ -139,7 +147,12 @@ function Footer() {
                         className="mr-3"
                       />
                     )}
-                    <a href={contact.href} target="_blank" rel="noopener noreferrer">
+                    <a
+                      style={{ fontSize: "16px", fontWeight: "normal" }}
+                      href={contact.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
                       {contact.title}
                     </a>
                   </li>
@@ -150,7 +163,8 @@ function Footer() {
         <div
           className={`${Style.copyright} border-t border-green-500 mt-8 pt-8 text-center text-green-100`}
         >
-          {footer.copyright || "© 2024 HCM57 Solution. Tất cả quyền được bảo lưu."}
+          {footer.copyright ||
+            "© 2024 HCM57 Solution. Tất cả quyền được bảo lưu."}
         </div>
       </div>
     </div>

@@ -1,14 +1,17 @@
 .main {
-  margin-top: 72px;
+  margin-top: 84px; /* Trừ đi chiều cao header */
+  min-height: calc(100vh - 84px); /* Chiều cao viewport trừ header */
+  display: flex;
+  align-items: center; /* Căn giữa theo chiều dọc */
   padding: 80px 16px;
 }
+
 .container {
   width: 90%;
   margin: 0 auto;
 }
 
-.text{
-
+.text {
   padding: 15px 0;
 }
 .button {
