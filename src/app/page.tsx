@@ -32,7 +32,7 @@ export default function Home() {
       try {
         const response = await httpGet<ApiResponse>("solutions_section");
 
-        if (response.data && response.data.length > 0) {
+        if (response.data) {
           setData(response.data[0]);
         } else {
           setError("no-data");
