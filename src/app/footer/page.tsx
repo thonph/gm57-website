@@ -63,7 +63,9 @@ function Footer() {
 
   return (
     <div className={`bg-green-600 text-white`}>
-      <div className={`container mx-auto py-12 pl-4 md:pl-0`}>
+      <div
+        className={`container mx-auto px-4 sm:px-6 md:px-8 lg:px-10 xl:px-12 2xl:px-16 py-12 pl-4 md:pl-0`}
+      >
         <div className="grid md:grid-cols-4 gap-8">
           {/* Item 1: Logo + mô tả + social */}
           <div>
