@@ -70,7 +70,9 @@ function HomeSection() {
             </div>
             <h1 className="text-4xl md:text-6xl font-semibold text-black mb-6 whitespace-nowrap">
               {data.title.split(" ")[0]}{" "}
-              <span className="text-green-600">{data.title.split(" ")[1]}</span>
+              <span className="solution-heading-span text-green-600">
+                {data.title.split(" ")[1]}
+              </span>
             </h1>
             <p className="text-xl text-gray-600 mb-8">{data.description}</p>
             <div className="flex flex-col sm:flex-row gap-4">
