@@ -162,7 +162,7 @@ export default function Header() {
               <div className="lg:hidden">
                 <Disclosure.Button
                   style={{ cursor: "pointer" }}
-                  className="inline-flex items-center justify-center rounded-md p-2 text-gray-700 hover:bg-gray-200 focus:outline-none"
+                  className="inline-flex items-center justify-center rounded-md text-gray-700 hover:bg-gray-200 focus:outline-none"
                 >
                   {open ? (
                     <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
@@ -181,6 +181,7 @@ export default function Header() {
             >
               {headerData.items.map((item) => (
                 <a
+                  style={{ marginBottom: "8px" }}
                   key={item.id_menu}
                   href={`#${item.id_menu}`}
                   onClick={(e) => handleMenuClick(e, item.id_menu)}
